@@ -4,8 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Win.ScktComp, Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Win.ScktComp, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
@@ -92,6 +91,9 @@ const
   CRLF = CR + LF;
 
 implementation
+
+uses
+  System.StrUtils;
 
 {$R *.dfm}
 
@@ -356,7 +358,7 @@ procedure TForm1.ServerSocket1ClientRead(Sender: TObject;  Socket: TCustomWinSoc
 var
   Txt: String;
 begin
-  if CheckBox5.Checked then Socket.SendText(Socket.ReceiveText);
+  if CheckBox5.Checked then Socket.SendText(IfThen(Trim(Edit5.Text).IsEmpty,Socket.ReceiveText,Trim(Edit5.Text)));
 
   Txt := String(Socket.ReceiveText);
   EscreveLog('Servidor -> Mensagem recebida de ' + Socket.RemoteAddress + ':' + IntToStr(Socket.RemotePort) + ': ' + Txt);
